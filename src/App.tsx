@@ -139,7 +139,7 @@ export default function App() {
   };
 
   const handleCopyGroup = async (group: EmailGroup) => {
-    await writeClipboard(group.bindings.map((binding) => binding.qrCodeId).join('\n'));
+    await writeClipboard(group.account);
     setCopiedGroup(group.account);
     setTimeout(() => setCopiedGroup(null), 2000);
   };
@@ -320,7 +320,7 @@ export default function App() {
                                     type="button"
                                     onClick={() => handleCopyGroup(group)}
                                     className="rounded p-1 text-gray-400 opacity-0 transition-colors hover:bg-gray-100 hover:text-gray-600 group-hover/row:opacity-100"
-                                    title="复制该邮箱的所有二维码ID"
+                                    title="复制该邮箱"
                                   >
                                     {copiedGroup === group.account ? <CheckCircle2 className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                                   </button>
