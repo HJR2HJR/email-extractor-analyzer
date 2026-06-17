@@ -1,0 +1,6 @@
+{
+  "name": "Email Extractor & Analyzer",
+  "description": "Upload email files (.eml, .txt) or paste text to extract user binding URLs and QR codes, and automatically identify new/old customers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
