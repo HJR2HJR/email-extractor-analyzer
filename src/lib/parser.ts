@@ -28,7 +28,9 @@ const decodeQuotedPrintableUtf8 = (value: string) => {
 };
 
 export const parseTextBlocks = (rawText: string) => {
-  let text = rawText.replace(/\r?\n[ \t]+/g, ' ');
+  let text = rawText.replace(/=\r?\n/g, '');
+
+  text = text.replace(/\r?\n[ \t]+/g, ' ');
 
   text = text.replace(/(\?=)\s+(=\?)/g, '$1$2');
 
@@ -51,7 +53,6 @@ export const parseTextBlocks = (rawText: string) => {
     return match;
   });
 
-  text = text.replace(/=\s*\r?\n/g, '');
   text = text.replace(/=([0-9A-Fa-f]{2})/g, (_, hex) => {
     try {
       return String.fromCharCode(parseInt(hex, 16));
