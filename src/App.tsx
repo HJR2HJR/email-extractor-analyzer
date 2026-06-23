@@ -265,13 +265,13 @@ export default function App() {
 
         <section className="relative flex min-h-0 flex-1 flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
           <div className="flex-1 overflow-auto">
-            <table className="w-full table-fixed border-collapse whitespace-nowrap text-left text-sm">
+            <table className="w-full min-w-[1390px] table-fixed border-collapse whitespace-nowrap text-left text-sm">
               <colgroup>
-                <col className="w-[17%]" />
-                <col className="w-[8%]" />
-                <col className="w-[55%]" />
-                <col className="w-[12%]" />
-                <col className="w-[8%]" />
+                <col className="w-[150px]" />
+                <col className="w-[80px]" />
+                <col className="w-[740px]" />
+                <col className="w-[280px]" />
+                <col className="w-[140px]" />
               </colgroup>
               <thead className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50">
                 <tr>
