@@ -265,10 +265,17 @@ export default function App() {
 
         <section className="relative flex min-h-0 flex-1 flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
           <div className="flex-1 overflow-auto">
-            <table className="w-full border-collapse whitespace-nowrap text-left text-sm">
+            <table className="w-full table-fixed border-collapse whitespace-nowrap text-left text-sm">
+              <colgroup>
+                <col className="w-[17%]" />
+                <col className="w-[8%]" />
+                <col className="w-[55%]" />
+                <col className="w-[12%]" />
+                <col className="w-[8%]" />
+              </colgroup>
               <thead className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50">
                 <tr>
-                  <th className="px-5 py-3 text-xs font-semibold uppercase text-gray-500">
+                  <th className="px-4 py-3 text-xs font-semibold uppercase text-gray-500">
                     <div className="flex items-center gap-2">
                       邮箱
                       {rawBindings.length > 0 && (
@@ -278,9 +285,9 @@ export default function App() {
                       )}
                     </div>
                   </th>
-                  <th className="px-5 py-3 text-xs font-semibold uppercase text-gray-500">客户类型</th>
-                  <th className="min-w-[240px] px-5 py-3 text-xs font-semibold uppercase text-gray-500">目标链接 (Target URL)</th>
-                  <th className="px-5 py-3 text-xs font-semibold uppercase text-gray-500">
+                  <th className="px-3 py-3 text-xs font-semibold uppercase text-gray-500">客户类型</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase text-gray-500">目标链接 (Target URL)</th>
+                  <th className="px-3 py-3 text-xs font-semibold uppercase text-gray-500">
                     <div className="flex items-center gap-2">
                       二维码ID (QR ID)
                       {rawBindings.length > 0 && (
@@ -290,7 +297,7 @@ export default function App() {
                       )}
                     </div>
                   </th>
-                  <th className="px-5 py-3 text-xs font-semibold uppercase text-gray-500">邮件发送时间</th>
+                  <th className="px-3 py-3 text-xs font-semibold uppercase text-gray-500">邮件发送时间</th>
                 </tr>
               </thead>
               <tbody>
@@ -312,9 +319,14 @@ export default function App() {
 
                         return (
                           <tr key={binding.id} className="group/row transition-colors hover:bg-gray-50/50">
-                            <td className={`border-r border-gray-100 bg-white px-5 py-3 align-top ${isLastInGroup ? 'border-b border-gray-100' : ''}`}>
-                              <div className="flex items-center gap-2">
-                                <span className={`font-medium ${isFirstInGroup ? 'select-all text-gray-900' : 'select-text text-transparent'}`}>{group.account}</span>
+                            <td className={`border-r border-gray-100 bg-white px-4 py-3 align-top ${isLastInGroup ? 'border-b border-gray-100' : ''}`}>
+                              <div className="flex min-w-0 items-center gap-2">
+                                <span
+                                  className={`min-w-0 flex-1 truncate font-medium ${isFirstInGroup ? 'select-all text-gray-900' : 'select-text text-transparent'}`}
+                                  title={isFirstInGroup ? group.account : undefined}
+                                >
+                                  {group.account}
+                                </span>
                                 {isFirstInGroup && (
                                   <button
                                     type="button"
@@ -327,7 +339,7 @@ export default function App() {
                                 )}
                               </div>
                             </td>
-                            <td className={`border-r border-gray-100 bg-white px-5 py-3 align-top ${isLastInGroup ? 'border-b border-gray-100' : ''}`}>
+                            <td className={`border-r border-gray-100 bg-white px-3 py-3 align-top ${isLastInGroup ? 'border-b border-gray-100' : ''}`}>
                               <span
                                 className={`inline-flex items-center rounded border px-2 py-0.5 text-xs font-bold transition-none ${
                                   isFirstInGroup
@@ -340,14 +352,14 @@ export default function App() {
                                 {group.isNewCustomer ? 'new' : 'old'}
                               </span>
                             </td>
-                            <td className="border-b border-gray-100 px-5 py-3 align-top">
-                              <a href={binding.targetUrl} target="_blank" rel="noreferrer" className="flex items-center justify-start gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline">
-                                <span className="max-w-[280px] truncate xl:max-w-[400px]">{binding.targetUrl}</span>
+                            <td className="border-b border-gray-100 px-4 py-3 align-top">
+                              <a href={binding.targetUrl} target="_blank" rel="noreferrer" className="flex min-w-0 items-center justify-start gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline">
+                                <span className="min-w-0 flex-1 truncate" title={binding.targetUrl}>{binding.targetUrl}</span>
                                 <ExternalLink className="h-3 w-3 shrink-0" />
                               </a>
                             </td>
-                            <td className="border-b border-gray-100 px-5 py-3 align-top font-mono text-xs text-gray-600">{binding.qrCodeId}</td>
-                            <td className="border-b border-gray-100 px-5 py-3 align-top text-sm text-gray-500">{binding.date}</td>
+                            <td className="truncate border-b border-gray-100 px-3 py-3 align-top font-mono text-xs text-gray-600" title={binding.qrCodeId}>{binding.qrCodeId}</td>
+                            <td className="truncate border-b border-gray-100 px-3 py-3 align-top text-sm text-gray-500" title={binding.date}>{binding.date}</td>
                           </tr>
                         );
                       })}
