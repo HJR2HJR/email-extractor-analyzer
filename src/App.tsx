@@ -178,11 +178,15 @@ export default function App() {
       if (!map.has(binding.account)) {
         map.set(binding.account, {
           account: binding.account,
-          isNewCustomer: welcomeSet.has(binding.account),
+          isNewCustomer: welcomeSet.has(binding.account) || binding.inferredCustomerType === 'new',
           bindings: [],
         });
       }
-      map.get(binding.account)!.bindings.push(binding);
+      const group = map.get(binding.account)!;
+      if (binding.inferredCustomerType === 'new') {
+        group.isNewCustomer = true;
+      }
+      group.bindings.push(binding);
     }
 
     return Array.from(map.values());
@@ -326,7 +330,7 @@ export default function App() {
     let csvContent = '邮箱,客户类型,目标链接,二维码ID,邮件发送时间\n';
 
     groupedData.forEach((group) => {
-      const customerType = group.isNewCustomer ? '新客户' : '老客户';
+      const customerType = group.isNewCustomer ? 'new' : 'old';
       group.bindings.forEach((binding) => {
         csvContent += [
           `"${group.account}"`,
@@ -485,7 +489,7 @@ export default function App() {
                             : 'select-text border-transparent bg-transparent text-transparent'
                         }`}
                       >
-                        {group.isNewCustomer ? '新客' : '老客'}
+                        {group.isNewCustomer ? 'new' : 'old'}
                       </span>
                     </td>
                     <td className="border-b border-gray-100 px-4 py-3 align-top">
