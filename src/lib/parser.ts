@@ -28,6 +28,39 @@ const decodeQuotedPrintableUtf8 = (value: string) => {
 };
 
 export const parseTextBlocks = (rawText: string) => {
+  let welcomeText = rawText.replace(/\r?\n[ \t]+/g, ' ');
+  welcomeText = welcomeText.replace(/(\?=)\s+(=\?)/g, '$1$2');
+  welcomeText = welcomeText.replace(/=\?([^?]+)\?([BQbq])\?([^?]+)\?=/g, (match, charset, encoding, data) => {
+    try {
+      if (encoding.toUpperCase() === 'B') {
+        const binStr = atob(data);
+        const bytes = new Uint8Array(binStr.length);
+        for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
+        return new TextDecoder(charset.toLowerCase() || 'utf-8').decode(bytes);
+      }
+
+      if (encoding.toUpperCase() === 'Q') {
+        return decodeQuotedPrintableUtf8(data);
+      }
+    } catch {
+      return match;
+    }
+
+    return match;
+  });
+  welcomeText = welcomeText.replace(/=\s*\r?\n/g, '');
+  welcomeText = welcomeText.replace(/=([0-9A-Fa-f]{2})/g, (_, hex) => {
+    try {
+      return String.fromCharCode(parseInt(hex, 16));
+    } catch {
+      return '=';
+    }
+  });
+  welcomeText = welcomeText.replace(/&nbsp;/gi, ' ');
+  welcomeText = welcomeText.replace(/<br\s*\/?>/gi, '\n');
+  welcomeText = welcomeText.replace(/<\/p>/gi, '\n');
+  welcomeText = welcomeText.replace(/<[^>]*>?/gm, ' ');
+
   let text = rawText.replace(/=\r?\n/g, '');
 
   text = text.replace(/\r?\n[ \t]+/g, ' ');
@@ -76,10 +109,10 @@ export const parseTextBlocks = (rawText: string) => {
   }
 
   const welcomeRegex = /Welcome\s*to\s*Your\s*NFC\s*Google\s*Review/i;
-  if (welcomeRegex.test(text)) {
+  if (welcomeRegex.test(welcomeText)) {
     const toMatch =
-      text.match(/^(?:To|收件人)[^\S\n]*:[^\S\n]*(.+)$/im) ||
-      text.match(/To:\s*([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i);
+      welcomeText.match(/^(?:To|收件人)[^\S\n]*:[^\S\n]*(.+)$/im) ||
+      welcomeText.match(/To:\s*([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i);
 
     if (toMatch) {
       const emailMatch = toMatch[1].match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/);
