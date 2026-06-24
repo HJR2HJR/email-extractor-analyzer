@@ -178,14 +178,11 @@ export default function App() {
       if (!map.has(binding.account)) {
         map.set(binding.account, {
           account: binding.account,
-          isNewCustomer: welcomeSet.has(binding.account) || binding.inferredCustomerType === 'new',
+          isNewCustomer: welcomeSet.has(binding.account),
           bindings: [],
         });
       }
       const group = map.get(binding.account)!;
-      if (binding.inferredCustomerType === 'new') {
-        group.isNewCustomer = true;
-      }
       group.bindings.push(binding);
     }
 
