@@ -326,7 +326,7 @@ export default function App() {
     let csvContent = '邮箱,客户类型,目标链接,二维码ID,邮件发送时间\n';
 
     groupedData.forEach((group) => {
-      const customerType = group.isNewCustomer ? 'new' : 'old';
+      const customerType = group.isNewCustomer ? '新客户' : '老客户';
       group.bindings.forEach((binding) => {
         csvContent += [
           `"${group.account}"`,
@@ -485,7 +485,7 @@ export default function App() {
                             : 'select-text border-transparent bg-transparent text-transparent'
                         }`}
                       >
-                        {group.isNewCustomer ? 'new' : 'old'}
+                        {group.isNewCustomer ? '新客' : '老客'}
                       </span>
                     </td>
                     <td className="border-b border-gray-100 px-4 py-3 align-top">
